@@ -1,0 +1,11 @@
+[[redirects]]
+  from   = "/api/members"
+  to     = "https://docs.google.com/spreadsheets/d/1xZpDCShpzgj1vOU3M73WWibzf3D9Il6FwF_z1b-GBas/gviz/tq?tqx=out:csv"
+  status = 200
+  force  = true
+
+# SPA routing — handles direct URL access to any page
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ବହି Registry — Book Club of Communitie Odisha</title>
+<meta name="description" content="The readers directory of Book Club of Communitie Odisha — 42 founding members across Bhubaneswar, Cuttack & beyond.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 7rem 2rem 6rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 60px,
+    rgba(200,169,126,0.03) 60px, rgba(200,169,126,0.03) 61px
+  );
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--warm-mid); margin-bottom: 1.25rem; display: block;
+  animation: fadeUp 0.6s ease both;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 900; line-height: 1.0; letter-spacing: -0.02em;
+  position: relative; animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 em { color: var(--warm-mid); font-style: italic; }
+.hero-tagline {
+  margin-top: 1.5rem; font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(245,237,216,0.6); font-style: italic; font-weight: 300;
+  max-width: 480px; margin-left: auto; margin-right: auto;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-actions {
+  margin-top: 2.5rem; display: flex; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.hero-divider {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--warm-mid), transparent);
+  margin: 2.5rem auto 0;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+
+/* ── STATS ── */
+.stats-section {
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+}
+.stats-grid {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+}
+.stat {
+  text-align: center; padding: 1rem;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; font-weight: 900; line-height: 1;
+  color: var(--accent); display: block;
+}
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--dust); margin-top: 0.3rem; display: block;
+}
+
+/* ── ABOUT ── */
+.about-section { background: var(--paper); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.about-text p { color: var(--dust); font-size: 1.05rem; margin-top: 1.25rem; line-height: 1.75; }
+.about-text p strong { color: var(--ink); font-weight: 500; }
+.about-text .btn { margin-top: 2rem; }
+.about-visual {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+}
+.genre-block {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px; padding: 1rem 1.1rem;
+  transition: transform 0.2s;
+}
+.genre-block:hover { transform: translateY(-2px); }
+.genre-block:nth-child(odd) { margin-top: 1rem; }
+.genre-icon { font-size: 1.4rem; margin-bottom: 0.35rem; display: block; }
+.genre-name {
+  font-family: 'Space Mono', monospace; font-size: 0.6rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--dust);
+}
+
+/* ── QUOTES ── */
+.quotes-section { background: var(--ink); color: var(--paper); }
+.quotes-section .eyebrow { color: var(--warm-mid); }
+.quotes-section h2.section-title { color: var(--paper); }
+.quotes-section .section-subtitle { color: rgba(245,237,216,0.5); }
+.quotes-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem; margin-top: 3rem;
+}
+.quote-card {
+  border: 1px solid rgba(200,169,126,0.2);
+  border-radius: 4px; padding: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  position: relative; transition: border-color 0.2s;
+}
+.quote-card:hover { border-color: rgba(200,169,126,0.5); }
+.quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 900; line-height: 0.7;
+  color: var(--warm-mid); opacity: 0.4; display: block; margin-bottom: 0.5rem;
+}
+.quote-text {
+  font-style: italic; font-size: 0.98rem;
+  color: rgba(245,237,216,0.8); line-height: 1.65;
+}
+.quote-author {
+  margin-top: 1.1rem; display: flex; align-items: center; gap: 0.75rem;
+}
+.quote-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--warm-mid), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 0.8rem;
+  font-weight: 700; color: white; flex-shrink: 0;
+}
+.quote-name {
+  font-family: 'Space Mono', monospace; font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm-mid);
+}
+.quote-city { font-size: 0.8rem; color: rgba(245,237,216,0.4); }
+
+/* ── CTA BAND ── */
+.cta-section { background: var(--accent); color: var(--paper); text-align: center; padding: 5rem 2rem; }
+.cta-section .eyebrow { color: rgba(245,237,216,0.6); }
+.cta-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.1;
+}
+.cta-section p { font-size: 1.1rem; color: rgba(245,237,216,0.75); font-style: italic; max-width: 460px; margin: 0 auto 2.5rem; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .quotes-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+  .stat:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+}
+@media (max-width: 600px) {
+  .hero { padding: 5rem 1.5rem 4rem; }
+  .quotes-grid { grid-template-columns: 1fr; }
+  .about-visual { grid-template-columns: 1fr 1fr; }
+  .genre-block:nth-child(odd) { margin-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">ବହି <em>Registry</em><small>Book Club of Communitie Odisha</small></a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="directory.html" class="nav-link">Directory</a>
+    <a href="join.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Book Club of Communitie Odisha · Est. 2026</span>
+  <h1>ବହି <em>Registry</em></h1>
+  <p class="hero-tagline">A living directory of readers, dreamers, and page-turners across Odisha</p>
+  <div class="hero-actions">
+    <a href="directory.html" class="btn btn-primary">Browse the Directory</a>
+    <a href="join.html" class="btn btn-outline-light">Join the Club</a>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat"><span class="stat-number" id="stat-members">-</span><span class="stat-label">Founding Members</span></div>
+    <div class="stat"><span class="stat-number" id="stat-cities">-</span><span class="stat-label">Cities & Chapters</span></div>
+    <div class="stat"><span class="stat-number" id="stat-genres">-</span><span class="stat-label">Genres Covered</span></div>
+    <div class="stat"><span class="stat-number" id="stat-langs">-</span><span class="stat-label">Languages Read</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section about-section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="eyebrow">Who We Are</span>
+        <h2 class="section-title">Readers finding each other across Odisha</h2>
+        <p>The <strong>Book Club of Communitie Odisha</strong> brings together readers from Bhubaneswar, Cuttack, and beyond — united by a love for books, stories, and the conversations they spark.</p>
+        <p>The <strong>ବହି Registry</strong> is our living member directory — a place to discover who's reading what, find your next book recommendation, or connect with someone who shares your taste for Russian literature or cozy fantasy.</p>
+        <p><em>ବହି</em> (pronounced "Bohi") means <strong>book</strong> in Odia.</p>
+        <a href="directory.html" class="btn btn-primary">Explore the Directory →</a>
+      </div>
+      <div class="about-visual">
+        <div class="genre-block"><span class="genre-icon">📖</span><span class="genre-name">Literary Fiction</span></div>
+        <div class="genre-block"><span class="genre-icon">🚀</span><span class="genre-name">Sci-Fi & Speculative</span></div>
+        <div class="genre-block"><span class="genre-icon">🏛️</span><span class="genre-name">Classics</span></div>
+        <div class="genre-block"><span class="genre-icon">🔍</span><span class="genre-name">Mystery & Thriller</span></div>
+        <div class="genre-block"><span class="genre-icon">🪔</span><span class="genre-name">Indian Writing</span></div>
+        <div class="genre-block"><span class="genre-icon">🌿</span><span class="genre-name">Mythology & Poetry</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section class="section quotes-section">
+  <div class="section-inner">
+    <span class="eyebrow">Voices from the Club</span>
+    <h2 class="section-title">Why we read</h2>
+    <p class="section-subtitle">In their own words — what our founding members are reading for in 2026.</p>
+    <div class="quotes-grid">
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">Read for the pure bliss of reading. Do not force read. If it is the right book for you, at the right time, it'll get to you.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">BH</div>
+          <div><div class="quote-name">Bhavya Agarwal</div><div class="quote-city">Cuttack · Selective Hermit</div></div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">20 books and fewer guilt-driven reading sessions. I want reading to feel intimate and nourishing again, not like productivity homework.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">SR</div>
+          <div><div class="quote-name">Srushti</div><div class="quote-city">Bhubaneswar · The Mood Reader</div></div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">I want to be a sincere reader who reads at least a page of a book daily. I want to read as much as I can this year.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">AM</div>
+          <div><div class="quote-name">Ashis Mahapatra</div><div class="quote-city">Cuttack · Arom</div></div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">60 books this year — I want to get absolutely destroyed by fantasy worlds and take my time with them.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">HA</div>
+          <div><div class="quote-name">Habiba</div><div class="quote-city">Not sure · Fantasy lover</div></div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">The intent is to pause and reflect — read more essays, poems and reread favourites along with my regular staples.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">SJ</div>
+          <div><div class="quote-name">Sujata</div><div class="quote-city">Bhubaneswar / Cuttack</div></div>
+        </div>
+      </div>
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">This year I want to delve into Russian literature. I've always been a great fan — aiming to finish at least 5 classics. ✨</p>
+        <div class="quote-author">
+          <div class="quote-avatar">AK</div>
+          <div><div class="quote-name">Akshita Sahoo</div><div class="quote-city">Cuttack · Host</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <span class="eyebrow">Project Marginalia · Now Live</span>
+  <h2>This is your margin. Write something in it.</h2>
+  <p>Part library catalogue. Part yearbook. Part "stalking your TBR respectfully." Join 42 founding members in Odisha's little internet of readers.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+    <a href="join.html" class="btn btn-outline-light" style="font-size:0.72rem;padding:0.9rem 2rem;">Fill out Project Marginalia →</a>
+    <a href="directory.html" class="btn" style="background:rgba(245,237,216,0.15);color:var(--paper);font-size:0.72rem;padding:0.9rem 2rem;">Browse Members</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">ବହି <em>Registry</em></span>
+  <span class="footer-org">Book Club of Communitie Odisha</span>
+  <div class="footer-divider"></div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="directory.html">Directory</a>
+    <a href="join.html">Join Us</a>
+  </div>
+  <div style="margin-top:1.25rem">Made with 📚 in Odisha · 2026</div>
+</footer>
+
+<script>
+function getMemberCities(m) {
+  const raw = (m.city || '').toLowerCase();
+  const list = [];
+  if (raw.includes('bhubaneswar') || raw.includes('bbsr') || raw.includes('both')) {
+    list.push('Bhubaneswar');
+  }
+  if (raw.includes('cuttack') || raw.includes('both')) {
+    list.push('Cuttack');
+  }
+  if (!raw.includes('bhubaneswar') && !raw.includes('bbsr') && !raw.includes('cuttack') && !raw.includes('both')) {
+    const cleaned = m.city.trim().replace(/\b\w/g, l => l.toUpperCase());
+    if (cleaned && cleaned.toLowerCase() !== 'not sure') {
+      list.push(cleaned);
+    }
+  }
+  return list;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuotes && text[i + 1] === '"') { field += '"'; i++; } // escaped quote
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      row.push(field.trim());
+      field = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (ch === '\r' && text[i + 1] === '\n') i++; // skip \r in \r\n
+      row.push(field.trim());
+      if (row.some(f => f !== '')) rows.push(row); // skip blank rows
+      row = []; field = '';
+    } else {
+      field += ch;
+    }
+  }
+  if (field || row.length) {
+    row.push(field.trim());
+    if (row.some(f => f !== '')) rows.push(row);
+  }
+  return rows;
+}
+
+async function loadStats() {
+  try {
+    let response;
+    try {
+      response = await fetch('/api/members');
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } catch (e) {
+      console.warn('Proxy fetch failed, falling back to direct Google Sheets CSV fetch:', e);
+      response = await fetch('https://docs.google.com/spreadsheets/d/1TvJssNzEjR3mHREPL5_EODCtoQ7U3hklMSiUnkBn9BI/gviz/tq?tqx=out:csv');
+      if (!response.ok) throw new Error(`Direct fetch HTTP ${response.status}`);
+    }
+    const csv = await response.text();
+    const rows = parseCSV(csv);
+
+    if (rows.length < 2) throw new Error('Sheet appears empty');
+
+    const COL = {
+      id:             1,
+      alias:          6,
+      city:           7,
+      genres:         10,
+      languages:      11,
+      consent:        24,
+    };
+
+    const members = rows.slice(1).map(row => ({
+      name:           row[COL.alias]      || '',
+      city:           row[COL.city]       || '',
+      genres:         (row[COL.genres]    || '').split(',').map(g => g.trim()).filter(Boolean),
+      langs:          (row[COL.languages] || '').split(',').map(l => l.trim()).filter(Boolean),
+      consent:        row[COL.consent]    || '',
+    }));
+
+    const activeMembers = members.filter(m =>
+      m.name &&
+      !(m.consent || '').includes('No - keep all my details private')
+    );
+
+    const totalMembers = activeMembers.length;
+    const uniqueCities = [...new Set(activeMembers.flatMap(m => getMemberCities(m)))];
+    const totalCities = uniqueCities.length;
+    const uniqueGenres = [...new Set(activeMembers.flatMap(m => m.genres))];
+    const totalGenres = uniqueGenres.length;
+    const uniqueLangs = [...new Set(activeMembers.flatMap(m => m.langs))];
+    const totalLangs = uniqueLangs.length;
+
+    document.getElementById('stat-members').textContent = totalMembers;
+    document.getElementById('stat-cities').textContent  = totalCities;
+    document.getElementById('stat-genres').textContent  = totalGenres;
+    document.getElementById('stat-langs').textContent   = totalLangs;
+
+  } catch (err) {
+    console.error('Stats load failed:', err);
+    document.getElementById('stat-members').textContent = '42';
+    document.getElementById('stat-cities').textContent  = '6+';
+    document.getElementById('stat-genres').textContent  = '12';
+    document.getElementById('stat-langs').textContent   = '7';
+  }
+}
+
+loadStats();
+</script>
+</body>
+</html>

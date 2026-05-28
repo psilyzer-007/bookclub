@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Us — ବହି Registry</title>
+<meta name="description" content="Join the Book Club of Communitie Odisha. Fill out Project Marginalia and become a founding member.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--ink); color: var(--paper);
+  padding: 4.5rem 2rem 4rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg,
+    transparent, transparent 50px,
+    rgba(200,169,126,0.03) 50px, rgba(200,169,126,0.03) 51px);
+}
+.page-header .eyebrow { position: relative; }
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900;
+  line-height: 1.1; position: relative; margin-top: 0.5rem;
+}
+.page-header h1 em { color: var(--warm-mid); font-style: italic; }
+.page-header p {
+  margin-top: 0.85rem; color: rgba(245,237,216,0.55);
+  font-style: italic; font-size: 1.05rem; position: relative;
+  max-width: 500px; margin-left: auto; margin-right: auto;
+}
+
+/* ── TWO-COLUMN LAYOUT ── */
+.join-section { background: var(--paper); }
+.join-grid {
+  display: grid; grid-template-columns: 1fr 1.25fr;
+  gap: 5rem; align-items: start;
+}
+
+/* ── LEFT: INFO ── */
+.join-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem;
+}
+.join-info p {
+  color: var(--dust); font-size: 1rem; line-height: 1.75; margin-bottom: 1.25rem;
+}
+.join-info p strong { color: var(--ink); font-weight: 500; }
+
+.perks-list { list-style: none; margin: 1.75rem 0; }
+.perks-list li {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+  font-size: 0.95rem; color: var(--dust); line-height: 1.5;
+}
+.perks-list li:last-child { border-bottom: none; }
+.perk-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+.perk-text strong { color: var(--ink); font-weight: 500; display: block; font-size: 0.9rem; }
+
+.privacy-note {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1rem 1.2rem; margin-top: 1.75rem;
+  font-size: 0.88rem; color: var(--dust);
+}
+.privacy-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.5rem; line-height: 1.5; }
+.privacy-row:last-of-type { margin-bottom: 0; }
+.privacy-badge {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.15rem 0.45rem; border-radius: 2px; white-space: nowrap; flex-shrink: 0;
+}
+.privacy-badge.public { background: rgba(92,107,74,0.12); color: var(--sage); border: 1px solid rgba(92,107,74,0.25); }
+.privacy-badge.admin  { background: rgba(139,58,30,0.08); color: var(--accent); border: 1px solid rgba(139,58,30,0.2); }
+
+.member-count-note {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1rem 1.2rem;
+  font-size: 0.88rem; color: var(--dust); font-style: italic;
+  margin-top: 1.5rem;
+}
+.member-count-note strong { color: var(--accent); font-style: normal; }
+
+/* ── RIGHT: EMBEDDED FORM ── */
+.join-form-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px; overflow: hidden;
+  position: sticky; top: 80px;
+}
+.form-panel-stripe {
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--warm-mid));
+}
+.form-panel-header {
+  padding: 1.5rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.form-panel-header .eyebrow { margin-bottom: 0.35rem; }
+.form-panel-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 900; line-height: 1.2;
+}
+.form-panel-header h2 em { color: var(--accent); font-style: italic; }
+.form-panel-header p {
+  font-size: 0.88rem; color: var(--dust); line-height: 1.6;
+  margin-top: 0.4rem; font-style: italic;
+}
+
+/* ── GOOGLE FORM IFRAME ── */
+.form-iframe-wrap {
+  position: relative;
+  background: var(--cream);
+}
+.form-iframe-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 680px; /* adjust this if the form feels too short or too tall */
+  border: none;
+  background: transparent;
+}
+
+/* Loading overlay for iframe */
+.iframe-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--cream); gap: 1rem;
+  pointer-events: none; transition: opacity 0.4s;
+}
+.iframe-loading.hidden { opacity: 0; }
+.iframe-spinner {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.iframe-loading p {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--dust);
+}
+
+/* Fallback link below iframe */
+.form-fallback {
+  padding: 0.85rem 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dust); background: var(--cream);
+}
+.form-fallback a { color: var(--accent); }
+.form-fallback a:hover { text-decoration: underline; }
+
+/* ── SOCIAL PROOF QUOTES ── */
+.member-quotes-section { background: var(--cream); }
+.mini-quotes-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; margin-top: 2.5rem;
+}
+.mini-quote {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1.1rem 1.2rem;
+}
+.mini-quote-text { font-style: italic; font-size: 0.9rem; color: var(--dust); line-height: 1.6; }
+.mini-quote-name {
+  font-family: 'Space Mono', monospace; font-size: 0.57rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent);
+  margin-top: 0.75rem; display: block;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .join-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .join-form-panel { position: static; }
+  .mini-quotes-grid { grid-template-columns: 1fr 1fr; }
+  .form-iframe-wrap iframe { height: 600px; }
+}
+@media (max-width: 600px) {
+  .mini-quotes-grid { grid-template-columns: 1fr; }
+  .form-iframe-wrap iframe { height: 550px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    ବହି <em>Registry</em>
+    <small>Book Club of Communitie Odisha</small>
+  </a>
+  <button class="nav-toggle"
+    onclick="document.querySelector('.nav-links').classList.toggle('open')"
+    aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="directory.html" class="nav-link">Directory</a>
+    <a href="join.html" class="nav-cta active" style="background:var(--paper);color:var(--ink);">Join Us</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <span class="eyebrow">Project Marginalia · Now Live</span>
+  <h1>This is your <em>margin.</em></h1>
+  <p>The best part of any well-loved book isn't the text — it's the marginalia. The underlines, the dog-ears, the notes scrawled at 1 AM. They tell you more about a reader than anything else could.</p>
+</div>
+
+<!-- MAIN JOIN SECTION -->
+<section class="section join-section">
+  <div class="section-inner">
+    <div class="join-grid">
+
+      <!-- LEFT: INFO -->
+      <div class="join-info">
+        <span class="eyebrow">What is Project Marginalia?</span>
+        <h3>Part library catalogue. Part yearbook. Part "stalking your TBR respectfully."</h3>
+        <p>Project Marginalia is our effort to collect yours — a place where members can discover each other's current reads, Substack / Goodreads / Fable / StoryGraph profiles, reading goals, favourite recommendations, and connect beyond just "Hi" in the WhatsApp group.</p>
+        <p>Filling out the form makes you an <strong>official registered member</strong> of Book Club @ Communitie Odisha — with your own Member ID, a spot in our community directory, and founding member status.</p>
+
+        <ul class="perks-list">
+          <li>
+            <span class="perk-icon">🪪</span>
+            <div class="perk-text"><strong>Your own Member ID & profile</strong>Listed in the ବହି Registry with your reading tastes, current book, goals & social links.</div>
+          </li>
+          <li>
+            <span class="perk-icon">🎴</span>
+            <div class="perk-text"><strong>Member Card (coming soon)</strong>Your card will grant access to partner discounts and exclusive club events.</div>
+          </li>
+          <li>
+            <span class="perk-icon">📍</span>
+            <div class="perk-text"><strong>Better events, planned for you</strong>Your details help us plan meet-ups and connect you with readers across Goodreads, StoryGraph, and Fable.</div>
+          </li>
+          <li>
+            <span class="perk-icon">🌱</span>
+            <div class="perk-text"><strong>Free, always</strong>No fees, no commitments — just a community of genuine readers.</div>
+          </li>
+        </ul>
+
+        <div class="privacy-note">
+          <div class="privacy-row">
+            <span class="privacy-badge public">📋 Public Directory</span>
+            Fields marked this way appear in the member directory — visible to all club members.
+          </div>
+          <div class="privacy-row">
+            <span class="privacy-badge admin">🔒 Admin Only</span>
+            Fields marked this way are seen only by Communitie management — never shared with anyone else.
+          </div>
+          <p style="margin-top:0.75rem;font-size:0.88rem;">You choose your own level of visibility at the end of the form.</p>
+        </div>
+
+        <div class="member-count-note">
+          The registry updates automatically as new responses come in. Your profile will appear in the directory within minutes of submitting.
+        </div>
+      </div>
+
+      <!-- RIGHT: EMBEDDED GOOGLE FORM -->
+      <div class="join-form-panel">
+        <div class="form-panel-stripe"></div>
+
+        <div class="form-panel-header">
+          <span class="eyebrow">Write something in it.</span>
+          <h2><em>Project Marginalia</em> is live</h2>
+          <p>Takes about 5 minutes. Only what you choose to share is ever made public.</p>
+        </div>
+
+        <div class="form-iframe-wrap">
+          <!-- Loading overlay — hides when the form loads -->
+          <div class="iframe-loading" id="iframe-loading">
+            <div class="iframe-spinner"></div>
+            <p>Loading the form…</p>
+          </div>
+
+          <!--
+          ════════════════════════════════════════════════════════
+          HOW TO GET THE EMBED URL FOR YOUR GOOGLE FORM:
+          1. Open your form in Google Forms (edit mode)
+          2. Click the three dots ⋮ (top right)
+          3. Click "Embed"
+          4. Copy the URL inside  src="..."  from the iframe code
+          5. Paste it below in place of the FORM_EMBED_URL_HERE
+          ════════════════════════════════════════════════════════
+          The URL looks like:
+          https://docs.google.com/forms/d/e/LONG_ID/viewform?embedded=true
+          -->
+          <iframe
+            id="form-iframe"
+            src="https://docs.google.com/forms/d/e/1FAIpQLSeg_wIPTLoEPqu1eWTYt1JA2PkxDl2mwKnqlfaALYuWXwcG8g/viewform?embedded=true"
+            title="Project Marginalia — Member Registration Form"
+            onload="document.getElementById('iframe-loading').classList.add('hidden')"
+            allowfullscreen
+          >
+            Loading form…
+          </iframe>
+        </div>
+
+        <div class="form-fallback">
+          Form not loading? &nbsp;
+          <a href="https://forms.gle/XmRbpNUycUyQ7WTv9" target="_blank" rel="noopener">
+            Open in Google Forms →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF QUOTES -->
+<section class="section member-quotes-section">
+  <div class="section-inner">
+    <span class="eyebrow">Already here</span>
+    <h2 class="section-title">Members in their own words</h2>
+    <div class="mini-quotes-grid">
+      <div class="mini-quote">
+        <p class="mini-quote-text">I want to get absolutely destroyed by fantasy worlds and take my time with them. 60 books this year.</p>
+        <span class="mini-quote-name">Habiba · Not sure</span>
+      </div>
+      <div class="mini-quote">
+        <p class="mini-quote-text">Less books, more retention. I want to actually remember what I read this year.</p>
+        <span class="mini-quote-name">Asma · Bhubaneswar</span>
+      </div>
+      <div class="mini-quote">
+        <p class="mini-quote-text">Reading to write more. Into the Heart of the Himalayas is on my table right now.</p>
+        <span class="mini-quote-name">Deepika · Bhubaneswar</span>
+      </div>
+      <div class="mini-quote">
+        <p class="mini-quote-text">I want to dive into Russian literature — at least 5 classics by year end. The list is long.</p>
+        <span class="mini-quote-name">Akshita Sahoo · Cuttack</span>
+      </div>
+      <div class="mini-quote">
+        <p class="mini-quote-text">Not speed reading. 30 books, but actually lived with each one.</p>
+        <span class="mini-quote-name">Souradip · Bhubaneswar</span>
+      </div>
+      <div class="mini-quote">
+        <p class="mini-quote-text">No number this year — just pause, reflect, read essays and poems and old favourites.</p>
+        <span class="mini-quote-name">Sujata · Bhubaneswar / Cuttack</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">ବହି <em>Registry</em></span>
+  <span class="footer-org">Book Club of Communitie Odisha</span>
+  <div class="footer-divider"></div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="directory.html">Directory</a>
+    <a href="join.html">Join Us</a>
+  </div>
+  <div style="margin-top:1.25rem">Made with 📚 in Odisha · 2026</div>
+</footer>
+
+</body>
+</html>

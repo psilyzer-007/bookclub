@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Directory — ବହି Registry</title>
+<meta name="description" content="Browse all members of the Book Club of Communitie Odisha reading group.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--ink); color: var(--paper);
+  padding: 3.5rem 2rem 3rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, transparent, transparent 50px, rgba(200,169,126,0.03) 50px, rgba(200,169,126,0.03) 51px);
+}
+.page-header .eyebrow { position: relative; }
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  line-height: 1.1; position: relative;
+}
+.page-header h1 em { color: var(--warm-mid); font-style: italic; }
+.page-header p {
+  margin-top: 0.75rem; color: rgba(245,237,216,0.55);
+  font-style: italic; font-size: 1rem; position: relative;
+}
+
+/* ── CONTROLS ── */
+.controls {
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 1.1rem 2rem; position: sticky; top: 62px; z-index: 100;
+  box-shadow: 0 2px 12px rgba(26,18,9,0.07);
+}
+.controls-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
+}
+.search-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-wrap svg {
+  position: absolute; left: 0.85rem; top: 50%;
+  transform: translateY(-50%); color: var(--dust); pointer-events: none;
+}
+#search {
+  width: 100%; padding: 0.62rem 1rem 0.62rem 2.4rem;
+  border: 1.5px solid var(--border); border-radius: 3px;
+  background: var(--card-bg); font-family: 'Crimson Pro', serif;
+  font-size: 1rem; color: var(--ink); outline: none; transition: border-color 0.2s;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: var(--dust); }
+
+.filter-wrap { display: flex; gap: 0.5rem; align-items: center; }
+.filter-label {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--dust); white-space: nowrap;
+}
+select {
+  padding: 0.58rem 2rem 0.58rem 0.75rem;
+  border: 1.5px solid var(--border); border-radius: 3px;
+  background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239e8e7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.6rem center;
+  font-family: 'Crimson Pro', serif; font-size: 0.95rem; color: var(--ink);
+  outline: none; cursor: pointer; appearance: none; transition: border-color 0.2s;
+}
+select:focus { border-color: var(--accent); }
+
+.count-pill {
+  margin-left: auto; font-family: 'Space Mono', monospace;
+  font-size: 0.62rem; color: var(--dust); white-space: nowrap;
+  background: var(--card-bg); border: 1px solid var(--border);
+  padding: 0.3rem 0.75rem; border-radius: 20px;
+}
+.count-pill span { color: var(--accent); font-weight: 700; }
+
+/* ── GRID ── */
+main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1.4rem;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer; display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,18,9,0.11); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card-stripe { height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
+
+.card-header {
+  padding: 1rem 1.2rem 0.8rem;
+  display: flex; align-items: flex-start; gap: 0.8rem;
+  border-bottom: 1px solid rgba(212,196,168,0.45);
+}
+.avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--warm-mid), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1.05rem;
+  font-weight: 700; color: white; flex-shrink: 0;
+}
+.name-block { flex: 1; min-width: 0; }
+.member-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; line-height: 1.2; word-break: break-word;
+}
+.member-meta { display: flex; gap: 0.4rem; margin-top: 0.2rem; flex-wrap: wrap; align-items: center; }
+.tag-pill {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.12rem 0.45rem; border-radius: 2px;
+  background: rgba(139,58,30,0.1); color: var(--accent);
+}
+.meta-city { font-size: 0.8rem; color: var(--dust); font-style: italic; }
+
+.card-body { padding: 0.85rem 1.2rem 0.9rem; flex: 1; }
+.info-row { margin-bottom: 0.55rem; font-size: 0.88rem; line-height: 1.4; }
+.info-label {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--dust);
+  display: block; margin-bottom: 0.12rem;
+}
+.info-value { color: var(--ink); }
+.info-value.italic { font-style: italic; color: var(--accent); }
+
+.genres-wrap { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.15rem; }
+.genre-tag {
+  font-size: 0.7rem; padding: 0.12rem 0.45rem;
+  background: rgba(92,107,74,0.1); color: var(--sage);
+  border: 1px solid rgba(92,107,74,0.2); border-radius: 2px;
+}
+
+/* ── CARD FOOTER / SOCIAL ICONS ── */
+.card-footer {
+  padding: 0.6rem 1.2rem;
+  background: rgba(212,196,168,0.18);
+  border-top: 1px solid rgba(212,196,168,0.45);
+  display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+}
+.social-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border: 1px solid var(--border); border-radius: 3px;
+  background: var(--card-bg); transition: all 0.15s;
+  text-decoration: none; overflow: hidden;
+  position: relative;
+}
+.social-icon:hover { border-color: var(--ink); background: var(--ink); transform: translateY(-1px); }
+.social-icon img { width: 16px; height: 16px; object-fit: contain; display: block; }
+.social-icon:hover img { filter: brightness(10); }
+.social-icon .fallback-text {
+  font-family: 'Space Mono', monospace; font-size: 0.5rem;
+  text-transform: uppercase; color: var(--dust); letter-spacing: 0.05em;
+}
+.social-icon:hover .fallback-text { color: white; }
+.member-id-badge {
+  font-family: 'Space Mono', monospace; font-size: 0.55rem;
+  color: rgba(158,142,122,0.45); margin-left: auto;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,18,9,0.72); z-index: 300;
+  backdrop-filter: blur(4px); padding: 2rem 1rem;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+.modal {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 6px; max-width: 580px; width: 100%;
+  animation: slideUp 0.22s ease; position: relative; overflow: hidden;
+  margin: auto;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-stripe { height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--warm-mid)); }
+.modal-close {
+  position: absolute; top: 0.9rem; right: 0.9rem; width: 28px; height: 28px;
+  background: none; border: 1px solid var(--border); border-radius: 2px;
+  cursor: pointer; font-size: 0.85rem; color: var(--dust);
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.modal-close:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.modal-header {
+  padding: 1.4rem 1.6rem 1.1rem;
+  display: flex; gap: 1rem; align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+.modal-avatar {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--warm-mid), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1.4rem;
+  font-weight: 700; color: white; flex-shrink: 0;
+}
+.modal-name {
+  font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; line-height: 1.15;
+}
+.modal-sub { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-top: 0.35rem; }
+.modal-body {
+  padding: 1.2rem 1.6rem 1.4rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+.m-section { display: flex; flex-direction: column; gap: 0.2rem; }
+.m-section.full { grid-column: 1 / -1; }
+.m-label {
+  font-family: 'Space Mono', monospace; font-size: 0.57rem;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--dust); margin-bottom: 0.2rem;
+}
+.m-value { font-size: 0.93rem; color: var(--ink); line-height: 1.5; }
+.m-value.quote {
+  font-style: italic; color: var(--accent);
+  border-left: 2px solid var(--warm-mid); padding-left: 0.7rem; font-size: 0.98rem;
+}
+.modal-footer {
+  padding: 0.9rem 1.6rem; background: rgba(212,196,168,0.18);
+  border-top: 1px solid var(--border);
+  display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;
+}
+.modal-social {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  text-decoration: none; padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border); border-radius: 3px;
+  background: var(--card-bg); transition: all 0.15s; font-size: 0;
+}
+.modal-social img { width: 18px; height: 18px; object-fit: contain; }
+.modal-social .s-label {
+  font-family: 'Space Mono', monospace; font-size: 0.58rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--dust);
+}
+.modal-social:hover { border-color: var(--ink); background: var(--ink); }
+.modal-social:hover .s-label { color: var(--paper); }
+.modal-social:hover img { filter: brightness(10); }
+
+/* Empty state */
+.empty { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--dust); }
+.empty-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; opacity: 0.5; }
+.empty h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ink); margin-bottom: 0.5rem; }
+
+/* Spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .controls-inner { flex-direction: column; align-items: stretch; }
+  .modal-body { grid-template-columns: 1fr; }
+  .m-section.full { grid-column: 1; }
+  .grid { grid-template-columns: 1fr; }
+  .filter-wrap { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">ବହି <em>Registry</em><small>Book Club of Communitie Odisha</small></a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="directory.html" class="nav-link active">Directory</a>
+    <a href="join.html" class="nav-cta">Join Us</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <span class="eyebrow" id="h-count">Loading members…</span>
+  <h1>The <em>Directory</em></h1>
+  <p>Search, filter, and discover readers across Odisha</p>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search" placeholder="Search by name, book, genre, city…" autocomplete="off">
+    </div>
+    <div class="filter-wrap">
+      <span class="filter-label">City</span>
+      <select id="filterCity"><option value="">All Cities</option></select>
+    </div>
+    <div class="filter-wrap">
+      <span class="filter-label">Genre</span>
+      <select id="filterGenre"><option value="">All Genres</option></select>
+    </div>
+    <div class="filter-wrap">
+      <span class="filter-label">Language</span>
+      <select id="filterLang"><option value="">All Languages</option></select>
+    </div>
+    <div class="count-pill">Showing <span id="visibleCount">0</span> / <span id="totalCount">0</span></div>
+  </div>
+</div>
+
+<!-- GRID -->
+<main>
+  <div class="grid" id="grid">
+    <div class="loading-wrap" style="grid-column: 1 / -1; text-align: center; padding: 5rem 2rem; color: var(--dust);">
+      <div class="loading-spinner" style="width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--accent); animation: spin 0.8s linear infinite; margin: 0 auto 1.25rem;"></div>
+      <div class="loading-text" style="font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;">Fetching the registry…</div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">ବହି <em>Registry</em></span>
+  <span class="footer-org">Book Club of Communitie Odisha</span>
+  <div class="footer-divider"></div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="directory.html">Directory</a>
+    <a href="join.html">Join Us</a>
+  </div>
+  <div style="margin-top:1.25rem">Made with 📚 in Odisha · 2026</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-stripe"></div>
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+/* ── SOCIAL ICON URLS ── */
+const ICONS = {
+  goodreads:  'https://upload.wikimedia.org/wikipedia/commons/4/4b/Goodreads_%27g%27_logo.png',
+  substack:   'https://play-lh.googleusercontent.com/RoI_bifQ0eWgWqOg4cpbx7Bm8eFkBEml42htao3-_3aZb7xWFhZPbImflNT5bV3Kfnk',
+  fable:      'https://play-lh.googleusercontent.com/vGXmGFRWw-ENaAmTbnVl0kV8BydaHEfDUqz5ObGPuYWVcQlPl9nG44C0qDhemLeb0WhR=w240-h480-rw',
+  storygraph: 'https://play-lh.googleusercontent.com/bOOrAMR_IOv0jyKJU2MstONEBGzAEQmEoNmaRPl-V4CY4uvFNmrI2aBoXmnhGxhsxdo=w240-h480-rw',
+};
+
+/* ── DOM ELEMENTS ── */
+const cityEl  = document.getElementById('filterCity');
+const genreEl = document.getElementById('filterGenre');
+const langEl  = document.getElementById('filterLang');
+
+/* ── GLOBAL STATE ── */
+let allMembers = [];
+
+/* ── HELPERS ── */
+function initials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+function cleanLink(url) {
+  url = (url || '').trim();
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('www.')) return 'https://' + url;
+  return '';
+}
+
+function socialIcon(url, type, label) {
+  const cleaned = cleanLink(url);
+  if (!cleaned) return '';
+  return `<a class="social-icon" href="${cleaned}" target="_blank" rel="noopener" title="${label}" onclick="event.stopPropagation()">
+    <img src="${ICONS[type]}" alt="${label}" onerror="this.parentElement.innerHTML='<span class=\\'fallback-text\\'>${label[0]}</span>'">
+  </a>`;
+}
+
+function modalSocialIcon(url, type, label) {
+  const cleaned = cleanLink(url);
+  if (!cleaned) return '';
+  return `<a class="modal-social" href="${cleaned}" target="_blank" rel="noopener" title="${label}">
+    <img src="${ICONS[type]}" alt="${label}" onerror="this.style.display='none'">
+    <span class="s-label">${label}</span>
+  </a>`;
+}
+
+function getMemberCities(m) {
+  const raw = (m.city || '').toLowerCase();
+  const list = [];
+  if (raw.includes('bhubaneswar') || raw.includes('bbsr') || raw.includes('both')) {
+    list.push('Bhubaneswar');
+  }
+  if (raw.includes('cuttack') || raw.includes('both')) {
+    list.push('Cuttack');
+  }
+  if (!raw.includes('bhubaneswar') && !raw.includes('bbsr') && !raw.includes('cuttack') && !raw.includes('both')) {
+    const cleaned = m.city.trim().replace(/\b\w/g, l => l.toUpperCase());
+    if (cleaned && cleaned.toLowerCase() !== 'not sure') {
+      list.push(cleaned);
+    }
+  }
+  return list;
+}
+
+/* ── CSV PARSER ── */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuotes && text[i + 1] === '"') { field += '"'; i++; } // escaped quote
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      row.push(field.trim());
+      field = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (ch === '\r' && text[i + 1] === '\n') i++; // skip \r in \r\n
+      row.push(field.trim());
+      if (row.some(f => f !== '')) rows.push(row); // skip blank rows
+      row = []; field = '';
+    } else {
+      field += ch;
+    }
+  }
+  if (field || row.length) {
+    row.push(field.trim());
+    if (row.some(f => f !== '')) rows.push(row);
+  }
+  return rows;
+}
+
+/* ── POPULATE FILTERS ── */
+function populateFilters(membersList) {
+  const cities = [...new Set(membersList.flatMap(m => getMemberCities(m)))].sort();
+  const genres = [...new Set(membersList.flatMap(m => m.genres))].sort();
+  const langs  = [...new Set(membersList.flatMap(m => m.langs))].sort();
+
+  cityEl.innerHTML  = '<option value="">All Cities</option>';
+  genreEl.innerHTML = '<option value="">All Genres</option>';
+  langEl.innerHTML  = '<option value="">All Languages</option>';
+
+  cities.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; cityEl.appendChild(o); });
+  genres.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; genreEl.appendChild(o); });
+  langs.forEach(l => {  const o = document.createElement('option'); o.value = l; o.textContent = l; langEl.appendChild(o); });
+}
+
+/* ── RENDER CARD ── */
+function renderCard(m) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `View profile of ${m.name}`);
+
+  const topGenres = m.genres.slice(0, 3);
+  const socials = [
+    socialIcon(m.goodreads,  'goodreads',  'Goodreads'),
+    socialIcon(m.substack,   'substack',   'Substack'),
+    socialIcon(m.fable,      'fable',      'Fable'),
+    socialIcon(m.storygraph, 'storygraph', 'StoryGraph'),
+  ].join('');
+
+  card.innerHTML = `
+    <div class="card-stripe"></div>
+    <div class="card-header">
+      <div class="avatar">${initials(m.name)}</div>
+      <div class="name-block">
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">
+          ${m.tag ? `<span class="tag-pill">${m.tag}</span>` : ''}
+          <span class="meta-city">${m.city}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      ${m.reading ? `<div class="info-row">
+        <span class="info-label">Currently Reading</span>
+        <span class="info-value italic">${m.reading}</span>
+      </div>` : ''}
+      ${m.fav ? `<div class="info-row">
+        <span class="info-label">All-time Favourite</span>
+        <span class="info-value">${m.fav}</span>
+      </div>` : ''}
+      <div class="info-row">
+        <span class="info-label">Reads in</span>
+        <span class="info-value">${m.langs.join(' · ')}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Genres</span>
+        <div class="genres-wrap">
+          ${topGenres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+          ${m.genres.length > 3 ? `<span class="genre-tag">+${m.genres.length - 3}</span>` : ''}
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      ${socials || '<span style="font-size:0.7rem;color:var(--dust);font-style:italic;">No social links</span>'}
+      <span class="member-id-badge">${m.id}</span>
+    </div>`;
+
+  card.addEventListener('click', () => openModal(m));
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(m); } });
+  return card;
+}
+
+/* ── MODAL ── */
+function openModal(m) {
+  const socials = [
+    modalSocialIcon(m.goodreads,  'goodreads',  'Goodreads'),
+    modalSocialIcon(m.substack,   'substack',   'Substack'),
+    modalSocialIcon(m.fable,      'fable',      'Fable'),
+    modalSocialIcon(m.storygraph, 'storygraph', 'StoryGraph'),
+  ].join('');
+
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-header">
+      <div class="modal-avatar">${initials(m.name)}</div>
+      <div>
+        <div class="modal-name">${m.name}</div>
+        <div class="modal-sub">
+          ${m.tag ? `<span class="tag-pill">${m.tag}</span>` : ''}
+          <span class="meta-city">${m.city}</span>
+          <span class="member-id-badge">${m.id}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      ${m.goal ? `<div class="m-section full">
+        <div class="m-label">2026 Reading Goal</div>
+        <div class="m-value quote">${m.goal}</div>
+      </div>` : ''}
+      ${m.reading ? `<div class="m-section full">
+        <div class="m-label">Currently Reading</div>
+        <div class="m-value" style="font-style:italic;color:var(--accent)">${m.reading}</div>
+      </div>` : ''}
+      ${m.fav ? `<div class="m-section">
+        <div class="m-label">All-time Favourite</div>
+        <div class="m-value">${m.fav}</div>
+      </div>` : ''}
+      ${m.rec ? `<div class="m-section">
+        <div class="m-label">Recommends to Anyone</div>
+        <div class="m-value">${m.rec}</div>
+      </div>` : ''}
+      <div class="m-section">
+        <div class="m-label">Languages</div>
+        <div class="m-value">${m.langs.join(' · ')}</div>
+      </div>
+      <div class="m-section">
+        <div class="m-label">Status</div>
+        <div class="m-value">${m.status || 'Founding Member'}</div>
+      </div>
+      <div class="m-section full">
+        <div class="m-label">Genres</div>
+        <div class="genres-wrap" style="margin-top:0.25rem">
+          ${m.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+    ${socials ? `<div class="modal-footer">${socials}</div>` : ''}`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── FILTER + RENDER ── */
+function filterAndRender() {
+  const q     = document.getElementById('search').value.toLowerCase();
+  const city  = cityEl.value;
+  const genre = genreEl.value;
+  const lang  = langEl.value;
+
+  const filtered = allMembers.filter(m => {
+    const text = [m.name, m.city, m.tag, m.reading, m.fav, m.rec, m.goal, ...m.genres, ...m.langs].join(' ').toLowerCase();
+    if (q && !text.includes(q)) return false;
+    if (city && !getMemberCities(m).includes(city)) return false;
+    if (genre && !m.genres.includes(genre)) return false;
+    if (lang  && !m.langs.includes(lang)) return false;
+    return true;
+  });
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  document.getElementById('visibleCount').textContent = filtered.length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty">
+      <span class="empty-icon">📚</span>
+      <h3>No readers found</h3>
+      <p>Try a different search term or clear the filters.</p>
+    </div>`;
+    return;
+  }
+  filtered.forEach(m => grid.appendChild(renderCard(m)));
+}
+
+document.getElementById('search').addEventListener('input', filterAndRender);
+cityEl.addEventListener('change', filterAndRender);
+genreEl.addEventListener('change', filterAndRender);
+langEl.addEventListener('change', filterAndRender);
+
+/* ── DATA FETCH ── */
+async function loadDirectory() {
+  const grid = document.getElementById('grid');
+
+  try {
+    const response = await fetch('/api/members');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const csv = await response.text();
+    const rows = parseCSV(csv);
+
+    if (rows.length < 2) throw new Error('Sheet appears empty');
+
+    // Column Indices mapping to current Google Sheet layout (shifted by 2 due to Member ID and Status insertions)
+    const COL = {
+      id:             1,
+      status:         2,
+      alias:          6,
+      city:           7,
+      groupTag:       8,
+      genres:         10,
+      languages:      11,
+      currentRead:    12,
+      favBook:        13,
+      goal2026:       14,
+      recommendation: 15,
+      goodreads:      16,
+      substack:       17,
+      fable:          18,
+      storygraph:     19,
+      consent:        24,
+    };
+
+    const members = rows.slice(1).map(row => ({
+      id:             row[COL.id]             || '',
+      status:         row[COL.status]         || 'Founding Member',
+      name:           row[COL.alias]          || '',
+      city:           row[COL.city]           || '',
+      tag:            row[COL.groupTag]       || '',
+      genres:         (row[COL.genres]        || '').split(',').map(g => g.trim()).filter(Boolean),
+      langs:          (row[COL.languages]     || '').split(',').map(l => l.trim()).filter(Boolean),
+      reading:        row[COL.currentRead]    || '',
+      fav:            row[COL.favBook]        || '',
+      goal:           row[COL.goal2026]       || '',
+      rec:            row[COL.recommendation] || '',
+      goodreads:      row[COL.goodreads]      || '',
+      substack:       row[COL.substack]       || '',
+      fable:          row[COL.fable]          || '',
+      storygraph:     row[COL.storygraph]     || '',
+      consent:        row[COL.consent]        || '',
+    }));
+
+    allMembers = members
+      .filter(m => m.name && !(m.consent || '').includes('No - keep all my details private'))
+      .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+
+    document.getElementById('h-count').textContent = `${allMembers.length} Members`;
+    document.getElementById('totalCount').textContent = allMembers.length;
+
+    populateFilters(allMembers);
+    filterAndRender();
+
+  } catch (err) {
+    console.error('Directory load failed:', err);
+    grid.innerHTML = `
+      <div class="empty">
+        <span class="empty-icon">📭</span>
+        <h3>Couldn't load the member registry</h3>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+          If running locally, please deploy via Netlify. Ensure the Google Sheet is shared as "Anyone with the link can view".
+        </p>
+      </div>`;
+  }
+}
+
+// Load directory on page load
+loadDirectory();
+</script>
+</body>
+</html>
